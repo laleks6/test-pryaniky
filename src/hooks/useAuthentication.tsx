@@ -41,10 +41,3 @@ export default function useAuthentication() {
 
   return { mutate };
 }
-
-// onSuccess: () => {
-//   // ✅ refetch the comments list for our blog post
-//   queryClient.invalidateQueries({
-//     queryKey: ['posts', id, 'comments']
-//   })
-// },

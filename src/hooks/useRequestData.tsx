@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { Data } from '../types';
 
 const HOST = 'https://test.v5.pryaniky.com';
 
-const getData = async (token: string) => {
+const getData = async (token: string): Promise<Data[] | null> => {
   const respons = await fetch(
     `${HOST}/ru/data/v3/testmethods/docs/userdocs/get`,
     {
@@ -16,7 +17,7 @@ const getData = async (token: string) => {
   const dataGet = await respons.json();
 
   console.log('get ', token, dataGet);
-  return dataGet;
+  return dataGet.data;
 };
 
 export default function useRequestData(token: string) {
