@@ -1,10 +1,12 @@
 import {
   Backdrop,
   Button,
+  createTheme,
   Fade,
   FormGroup,
   FormHelperText,
   Modal,
+  ThemeProvider,
   Typography,
 } from '@mui/material';
 
@@ -12,31 +14,41 @@ import { useState } from 'react';
 import PasswordInput from '../input/PasswordInput';
 import styles from './style.module.scss';
 import NameInput from '../input/nameInput';
+import { purple } from '@mui/material/colors';
 
 type Props = {
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  postUser(e: React.ChangeEvent<HTMLInputElement>): Promise<void>;
+  handlePostUser(e: React.ChangeEvent<HTMLInputElement>): Promise<void>;
 };
 
-function SignIn({ setUsername, setPassword, postUser }: Props) {
+function SignIn({ handlePostUser }: Props) {
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    // pt: 2,
-    // px: 4,
-    // pb: 3,
+  const handlePostData = (e) => {
+    console.log('click post btn');
+    handlePostUser(e);
   };
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#ede7f6',
+      },
+      secondary: purple,
+    },
+  });
+  const themeInput = createTheme({
+    palette: {
+      primary: {
+        main: '#ede7f6',
+        // light: will be calculated from palette.primary.main,
+        // dark: will be calculated from palette.primary.main,
+        // contrastText: will be calculated to contrast with palette.primary.main
+      },
+      secondary: purple,
+    },
+  });
 
   return (
     <div>
@@ -65,11 +77,20 @@ function SignIn({ setUsername, setPassword, postUser }: Props) {
             >
               Sign in
             </Typography>
-            <NameInput />
-            <PasswordInput />
-            <Button variant="contained" color="">
-              Sign in
-            </Button>
+            <ThemeProvider theme={themeInput}>
+              <NameInput />
+              <PasswordInput />
+            </ThemeProvider>
+            <ThemeProvider theme={theme}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={(e) => handlePostData(e)}
+                sx={{ color: '#7e57c2' }}
+              >
+                Sign in
+              </Button>
+            </ThemeProvider>
           </FormHelperText>
         </Fade>
       </Modal>

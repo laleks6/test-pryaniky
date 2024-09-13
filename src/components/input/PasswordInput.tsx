@@ -8,10 +8,17 @@ import {
   InputLabel,
   OutlinedInput,
 } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import {
+  IsValidPasswordContext,
+  SetPasswordContext,
+} from '../../context/Context';
 
 function PasswordInput() {
   const [showPassword, setShowPassword] = useState(false);
+
+  const setPassword = useContext(SetPasswordContext);
+  const isValidation = useContext(IsValidPasswordContext) as boolean;
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -36,7 +43,11 @@ function PasswordInput() {
     //   />
     //   <FormHelperText id="component-error-text">Error</FormHelperText>
     // </FormControl>
-    <FormControl variant="outlined">
+    <FormControl
+      variant="outlined"
+      onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
+      error={!isValidation}
+    >
       <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
       <OutlinedInput
         id="outlined-adornment-password"
@@ -55,7 +66,11 @@ function PasswordInput() {
           </InputAdornment>
         }
         label="Password"
+        sx={{ color: '#ede7f6' }}
       />
+      {!isValidation && (
+        <FormHelperText>Password must be "Password"</FormHelperText>
+      )}
     </FormControl>
   );
 }
