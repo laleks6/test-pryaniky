@@ -1,4 +1,6 @@
 import {
+  Box,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -7,6 +9,8 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material/';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
 import style from './style.module.css';
 import { Data } from '../../types';
 
@@ -21,6 +25,7 @@ function AccessibleTable({ data }: Data[]) {
     'Employee signature name',
     'Employee number',
     'Employee sig date',
+    'Action',
   ];
 
   function transformationDate(isoDate: string): string {
@@ -38,8 +43,16 @@ function AccessibleTable({ data }: Data[]) {
       <Table>
         <TableHead>
           <TableRow>
-            {tableHeads.map((el) => (
-              <TableCell sx={{ fontSize: 15, fontWeight: 700 }}>{el}</TableCell>
+            {tableHeads.map((el, i) => (
+              <TableCell
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: `${i === 8 && 'red'}`,
+                }}
+              >
+                {el}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -54,6 +67,24 @@ function AccessibleTable({ data }: Data[]) {
               <TableCell>{row.employeeSignatureName}</TableCell>
               <TableCell>{row.employeeNumber}</TableCell>
               <TableCell>{transformationDate(row.employeeSigDate)}</TableCell>
+              <TableCell>
+                <Box sx={{ display: 'flex' }}>
+                  <IconButton aria-label="delete">
+                    <DeleteIcon
+                      sx={{
+                        color: 'black',
+                      }}
+                    />
+                  </IconButton>
+                  <IconButton aria-label="delete">
+                    <CreateIcon
+                      sx={{
+                        color: 'black',
+                      }}
+                    />
+                  </IconButton>
+                </Box>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -63,6 +94,3 @@ function AccessibleTable({ data }: Data[]) {
 }
 
 export default AccessibleTable;
-function dateFormat(mydate: Date, arg1: string): any {
-  throw new Error('Function not implemented.');
-}
