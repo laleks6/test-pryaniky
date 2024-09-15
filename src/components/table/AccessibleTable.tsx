@@ -13,18 +13,29 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import style from './style.module.css';
 import { Data } from '../../types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import EditCreateForm from '../edit__create/EditCreateForm';
+import useDeleteData from '../../hooks/useDeleteData';
+import { TokenContext } from '../../context/Context';
 
 function AccessibleTable({ data }: Data[]) {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState('');
 
+  const { mutate } = useDeleteData();
+  const token = useContext(TokenContext);
   const handleOpen = (idDoc: string) => {
     setId(idDoc);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+
+  const handlDelete = (idDoc: string) => {
+    mutate({
+      token,
+      id: idDoc,
+    });
+  };
   console.log('DATA TABLE', data);
   const tableHeads = [
     'Document name',
@@ -80,7 +91,10 @@ function AccessibleTable({ data }: Data[]) {
                 <TableCell>{transformationDate(row.employeeSigDate)}</TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex' }}>
-                    <IconButton aria-label="delete">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handlDelete(row.id)}
+                    >
                       <DeleteIcon
                         sx={{
                           color: 'black',
