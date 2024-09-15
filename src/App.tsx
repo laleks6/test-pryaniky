@@ -9,6 +9,7 @@ import {
   IsValidPasswordContext,
   SetNameContext,
   SetPasswordContext,
+  TokenContext,
 } from './context/Context';
 
 function App() {
@@ -56,18 +57,20 @@ function App() {
 
   return (
     <>
-      <SetNameContext.Provider value={setUsername}>
-        <SetPasswordContext.Provider value={setPassword}>
-          <IsValidNameContext.Provider value={isValidName}>
-            <IsValidPasswordContext.Provider value={isValidPassword}>
-              <h1>Query</h1>
-              {!data?.length && <SignIn handlePostUser={handlePostUser} />}
-              {data?.length && <AccessibleTable data={data} />}
-              {isFetching && <div>Loading...</div>}
-            </IsValidPasswordContext.Provider>
-          </IsValidNameContext.Provider>
-        </SetPasswordContext.Provider>
-      </SetNameContext.Provider>
+      <TokenContext.Provider value={token}>
+        <SetNameContext.Provider value={setUsername}>
+          <SetPasswordContext.Provider value={setPassword}>
+            <IsValidNameContext.Provider value={isValidName}>
+              <IsValidPasswordContext.Provider value={isValidPassword}>
+                <h1>Query</h1>
+                {!data?.length && <SignIn handlePostUser={handlePostUser} />}
+                {data?.length && <AccessibleTable data={data} />}
+                {isFetching && <div>Loading...</div>}
+              </IsValidPasswordContext.Provider>
+            </IsValidNameContext.Provider>
+          </SetPasswordContext.Provider>
+        </SetNameContext.Provider>
+      </TokenContext.Provider>
     </>
   );
 }

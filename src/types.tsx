@@ -7,7 +7,7 @@ type Data = {
   employeeNumber: string;
   employeeSigDate: string;
   employeeSignatureName: string;
-  id: string;
+  id?: string;
 };
 
 export type { Data };
