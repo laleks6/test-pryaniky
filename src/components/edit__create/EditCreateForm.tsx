@@ -20,35 +20,55 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { useContext, useState } from 'react';
 import style from './style.module.scss';
 import dayjs, { Dayjs } from 'dayjs';
-import useChangeData from '../../hooks/useChangeData';
+
 import { TokenContext } from '../../context/Context';
+import { Data } from '../../types';
+import useChangeData from '../../hooks/useChangeData';
 
-type Props = { open: true; handleClose: () => void; id: string };
+type Props = {
+  data?: Data;
+  open: true;
+  handleClose: () => void;
+  handlMutate: (
+    requestData: Data,
+    token?: string | undefined,
+    id?: string | undefined
+  ) => void;
+  id?: string;
+};
 
-function EditCreateForm({ open, handleClose, id }: Props) {
-  const [docName, setDocName] = useState('');
-  const [docType, setDocType] = useState('');
-  const [signature, setSignature] = useState('');
-  const [companySignature, setCompanySignature] = useState('');
-  const [companySigDate, setCompanySigDate] = useState<Dayjs | null>(null);
-  const [employeeSigName, setEmployeeSigName] = useState('');
-  const [employeeNumber, setEmployeeNumber] = useState('');
-  const [employeeSigDate, setEmployeeSigDate] = useState<Dayjs | null>(null);
+function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
+  const [docName, setDocName] = useState(data?.documentName || '');
+  const [docType, setDocType] = useState(data?.documentType || '');
+  const [signature, setSignature] = useState(data?.documentStatus || '');
+  const [companySignature, setCompanySignature] = useState(
+    data?.companySignatureName || ''
+  );
+  const [companySigDate, setCompanySigDate] = useState<Dayjs | null>(
+    data?.companySigDate ? dayjs(data?.companySigDate) : null
+  );
+  const [employeeSigName, setEmployeeSigName] = useState(
+    data?.employeeSignatureName || ''
+  );
+  const [employeeNumber, setEmployeeNumber] = useState(
+    data?.employeeNumber || ''
+  );
+  const [employeeSigDate, setEmployeeSigDate] = useState<Dayjs | null>(
+    data?.employeeSigDate ? dayjs(data?.employeeSigDate) : null
+  );
 
-  const token = useContext(TokenContext);
+  const token = useContext(TokenContext) as string;
 
   // console.log(companySigDate);
 
-  const { mutate } = useChangeData();
   const handleChange = () => {
     const companyD = dayjs(companySigDate).format('YYYY-MM-DDTHH:mm:ss.sss[Z]');
     const mployeeD = dayjs(employeeSigDate).format(
       'YYYY-MM-DDTHH:mm:ss.sss[Z]'
     );
-    console.log('DATEEE', companyD);
-    console.log(mployeeD);
+
     //2022-11-23T11:19:27.017Z
-    const data = {
+    const requestData = {
       companySigDate: companyD,
       companySignatureName: companySignature,
       documentName: docName,
@@ -58,11 +78,10 @@ function EditCreateForm({ open, handleClose, id }: Props) {
       employeeSigDate: mployeeD,
       employeeSignatureName: employeeSigName,
     };
-    mutate({
-      data,
-      token,
-      id,
-    });
+    console.log('MUTATE 0 ', requestData, token, id);
+
+    console.log('MUTATE 1 ', requestData, token, id);
+    handlMutate(requestData, token, id);
   };
   return (
     <Modal
@@ -173,3 +192,19 @@ function EditCreateForm({ open, handleClose, id }: Props) {
 }
 
 export default EditCreateForm;
+function handlMutate(
+  requestData: {
+    companySigDate: string;
+    companySignatureName: string;
+    documentName: string;
+    documentStatus: string;
+    documentType: string;
+    employeeNumber: string;
+    employeeSigDate: string;
+    employeeSignatureName: string;
+  },
+  token: string,
+  id: string | undefined
+) {
+  throw new Error('Function not implemented.');
+}

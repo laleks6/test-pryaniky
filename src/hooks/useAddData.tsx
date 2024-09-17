@@ -6,13 +6,12 @@ const HOST = 'https://test.v5.pryaniky.com';
 type Props = {
   requestData: Data;
   token: string;
-  id: string | undefined;
 };
 
-const postData = async ({ requestData, token, id }: Props) => {
-  console.log('post BEFORE cahge data', token, requestData, id);
+const postData = async ({ requestData, token }: Props) => {
+  console.log('post BEFORE cahge data', token, requestData);
   const respons = await fetch(
-    `${HOST}/ru/data/v3/testmethods/docs/userdocs/set/${id}`,
+    `${HOST}/ru/data/v3/testmethods/docs/userdocs/create`,
     {
       method: 'POST',
       headers: {
@@ -29,7 +28,7 @@ const postData = async ({ requestData, token, id }: Props) => {
   return dataPost;
 };
 
-export default function useChangeData() {
+export default function useAddData() {
   // const { invalidateQueries, removeQueries } = useQueryClient();
   const queryClient = useQueryClient();
 

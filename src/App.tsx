@@ -11,6 +11,8 @@ import {
   SetPasswordContext,
   TokenContext,
 } from './context/Context';
+import { Box } from '@mui/material';
+import zIndex from '@mui/material/styles/zIndex';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -50,8 +52,14 @@ function App() {
 
     return validation;
   }
+  if (error) {
+    //If there is an error, render different JSX
+    return <span>Error: {error.message}</span>;
+  }
 
-  if (isFetching) console.log('isLoading');
+  if (isFetching) {
+    return <Box>Loading...</Box>;
+  }
 
   if (!isFetching) console.log('False isLoading');
 
@@ -65,7 +73,6 @@ function App() {
                 <h1>Query</h1>
                 {!data?.length && <SignIn handlePostUser={handlePostUser} />}
                 {data?.length && <AccessibleTable data={data} />}
-                {isFetching && <div>Loading...</div>}
               </IsValidPasswordContext.Provider>
             </IsValidNameContext.Provider>
           </SetPasswordContext.Provider>

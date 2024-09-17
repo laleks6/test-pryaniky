@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   IconButton,
   Paper,
   Table,
@@ -17,25 +18,65 @@ import { useContext, useState } from 'react';
 import EditCreateForm from '../edit__create/EditCreateForm';
 import useDeleteData from '../../hooks/useDeleteData';
 import { TokenContext } from '../../context/Context';
+import AddIcon from '@mui/icons-material/Add';
+import useChangeData from '../../hooks/useChangeData';
+import useAddData from '../../hooks/useAddData';
 
 function AccessibleTable({ data }: Data[]) {
-  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openNew, setOpenNew] = useState(false);
   const [id, setId] = useState('');
+  const [index, setIndex] = useState(0);
 
-  const { mutate } = useDeleteData();
-  const token = useContext(TokenContext);
-  const handleOpen = (idDoc: string) => {
+  const token = useContext(TokenContext) as string;
+
+  const mutateDelete = useDeleteData();
+  const mutateChange = useChangeData();
+  const mutateNewAdd = useAddData();
+
+  const handleOpenEdit = (idDoc: string, i: number) => {
     setId(idDoc);
-    setOpen(true);
+    setOpenEdit(true);
+    setIndex(i);
   };
-  const handleClose = () => setOpen(false);
+  const handleOpenNew = () => {
+    setOpenNew(true);
+  };
+  const handleClose = () => {
+    setOpenEdit(false);
+    setOpenNew(false);
+  };
 
   const handlDelete = (idDoc: string) => {
-    mutate({
+    mutateDelete.mutate({
       token,
       id: idDoc,
     });
   };
+
+  const handlChange = (
+    requestData: Data,
+    token: string,
+    id: string | undefined
+  ) => {
+    mutateChange.mutate({
+      requestData,
+      token,
+      id,
+    });
+  };
+
+  const handlNewData = (
+    requestData: Data,
+    token: string,
+    id: string | undefined
+  ) => {
+    mutateNewAdd.mutate({
+      requestData,
+      token,
+    });
+  };
+
   console.log('DATA TABLE', data);
   const tableHeads = [
     'Document name',
@@ -79,7 +120,7 @@ function AccessibleTable({ data }: Data[]) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row: Data) => (
+            {data.map((row: Data, i) => (
               <TableRow key={row.id}>
                 <TableCell>{row.documentName}</TableCell>
                 <TableCell>{row.documentType}</TableCell>
@@ -103,7 +144,7 @@ function AccessibleTable({ data }: Data[]) {
                     </IconButton>
                     <IconButton
                       aria-label="change"
-                      onClick={() => handleOpen(row.id)}
+                      onClick={() => handleOpenEdit(row.id, i)}
                     >
                       <CreateIcon
                         sx={{
@@ -118,7 +159,30 @@ function AccessibleTable({ data }: Data[]) {
           </TableBody>
         </Table>
       </TableContainer>
-      {open && <EditCreateForm open={open} handleClose={handleClose} id={id} />}
+      {openEdit && (
+        <EditCreateForm
+          data={data[index]}
+          open={openEdit}
+          handleClose={handleClose}
+          handlMutate={handlChange}
+          id={id}
+        />
+      )}
+      {openNew && (
+        <EditCreateForm
+          open={openNew}
+          handleClose={handleClose}
+          handlMutate={handlNewData}
+          id={id}
+        />
+      )}
+      <Button
+        variant="contained"
+        endIcon={<AddIcon />}
+        onClick={() => handleOpenNew()}
+      >
+        Add
+      </Button>
     </Box>
   );
 }
