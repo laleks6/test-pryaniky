@@ -13,6 +13,7 @@ import {
 } from './context/Context';
 import { Box } from '@mui/material';
 import zIndex from '@mui/material/styles/zIndex';
+import { isValidation } from './helpers/validation';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -47,11 +48,6 @@ function App() {
     }
   }
 
-  function isValidation(reg: RegExp, name: string): boolean {
-    const validation = reg.test(name);
-
-    return validation;
-  }
   if (error) {
     //If there is an error, render different JSX
     return <span>Error: {error.message}</span>;

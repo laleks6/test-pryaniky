@@ -24,6 +24,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { TokenContext } from '../../context/Context';
 import { Data } from '../../types';
 import useChangeData from '../../hooks/useChangeData';
+import { isValidationEditForm } from '../../helpers/validation';
 
 type Props = {
   data?: Data;
@@ -57,6 +58,10 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
     data?.employeeSigDate ? dayjs(data?.employeeSigDate) : null
   );
 
+  const [isValidaton, setIsValidation] = useState<
+    boolean | Record<string, boolean>
+  >(false);
+
   const token = useContext(TokenContext) as string;
 
   // console.log(companySigDate);
@@ -80,8 +85,13 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
     };
     console.log('MUTATE 0 ', requestData, token, id);
 
-    console.log('MUTATE 1 ', requestData, token, id);
-    handlMutate(requestData, token, id);
+    if (typeof isValidationEditForm(requestData) !== 'object') {
+      console.log('valid');
+      handlMutate(requestData, token, id);
+    } else {
+      console.log('not valid', isValidationEditForm(requestData));
+      setIsValidation(isValidationEditForm(requestData));
+    }
   };
   return (
     <Modal
@@ -109,14 +119,16 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
               label="Document name"
               value={docName}
               onChange={(e) => setDocName(e.target.value as string)}
-              // helperText="Incorrect entry."
+              error={isValidaton && !isValidaton.documentName}
+              helperText={isValidaton && 'The field must not be empty'}
             />
             <TextField
               id="outlined-error-helper-text"
               label="Document type"
-              helperText="Incorrect entry."
               value={docType}
               onChange={(e) => setDocType(e.target.value as string)}
+              error={isValidaton && !isValidaton.documentType}
+              helperText={isValidaton && 'The field must not be empty'}
             />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Signature</InputLabel>
@@ -126,6 +138,8 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
                 value={signature}
                 label="Signature"
                 onChange={(e) => setSignature(e.target.value as string)}
+                error={isValidaton && !isValidaton.documentStatus}
+                helperText={isValidaton && 'Select document status'}
               >
                 <MenuItem value={'Подписан'}>Подписан</MenuItem>
                 <MenuItem value={'Не подписан'}>Не подписан</MenuItem>
@@ -136,7 +150,8 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
               label="Company signature name"
               value={companySignature}
               onChange={(e) => setCompanySignature(e.target.value as string)}
-              // helperText="Incorrect entry."
+              error={isValidaton && !isValidaton.companySignatureName}
+              helperText={isValidaton && 'Select document status'}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer
@@ -147,6 +162,11 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
                   label="Company sig date"
                   value={companySigDate}
                   onChange={(newValue) => setCompanySigDate(newValue)}
+                  slotProps={{
+                    textField: {
+                      helperText: isValidaton && 'Select date',
+                    },
+                  }}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -155,14 +175,16 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
               label="Employee signature name"
               value={employeeSigName}
               onChange={(e) => setEmployeeSigName(e.target.value as string)}
-              // helperText="Incorrect entry."
+              error={isValidaton && !isValidaton.employeeSignatureName}
+              helperText={isValidaton && 'The field must not be empty'}
             />
             <TextField
               id="outlined-error-helper-text"
               label="Employee number"
               value={employeeNumber}
               onChange={(e) => setEmployeeNumber(e.target.value as string)}
-              // helperText="Incorrect entry."
+              error={isValidaton && !isValidaton.employeeNumber}
+              helperText={isValidaton && 'The field must not be empty'}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer
@@ -173,6 +195,11 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
                   label="Employee sig date"
                   value={employeeSigDate}
                   onChange={(newValue) => setEmployeeSigDate(newValue)}
+                  slotProps={{
+                    textField: {
+                      helperText: isValidaton && 'Select date',
+                    },
+                  }}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -192,19 +219,3 @@ function EditCreateForm({ data, open, handleClose, handlMutate, id }: Props) {
 }
 
 export default EditCreateForm;
-function handlMutate(
-  requestData: {
-    companySigDate: string;
-    companySignatureName: string;
-    documentName: string;
-    documentStatus: string;
-    documentType: string;
-    employeeNumber: string;
-    employeeSigDate: string;
-    employeeSignatureName: string;
-  },
-  token: string,
-  id: string | undefined
-) {
-  throw new Error('Function not implemented.');
-}
