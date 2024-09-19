@@ -1,5 +1,3 @@
-# React + TypeScript + Vite
-
  # Test Pryniky
 
 ## Link project 
