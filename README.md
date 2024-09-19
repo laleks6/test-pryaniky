@@ -17,9 +17,9 @@
 </p>
 ##Screenshot:
 
-![Main](![image](https://github.com/user-attachments/assets/2eb501e5-f7d2-42f0-b1c7-edaee727a07f)
+![Main](https://github.com/user-attachments/assets/2eb501e5-f7d2-42f0-b1c7-edaee727a07f)
 )
-![Sigin](![image](https://github.com/user-attachments/assets/69b285a6-8813-474e-ac52-df2ceab29b6c)
+![Sigin](https://github.com/user-attachments/assets/69b285a6-8813-474e-ac52-df2ceab29b6c)
 )
 
 ## Getting Started
