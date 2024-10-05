@@ -16,8 +16,10 @@ Task:
 
 <p align="left">
 <img src="https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png" width="36" height="36" title="React" />
- <img src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" width="36" height="36" title="TypeScript" />
- <img src="https://user-images.githubusercontent.com/25181517/192158956-48192682-23d5-4bfc-9dfb-6511ade346bc.png" width="36" height="36" title="Sass" />
+<img src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" width="36" height="36" title="TypeScript" />
+<img src="https://user-images.githubusercontent.com/25181517/192158956-48192682-23d5-4bfc-9dfb-6511ade346bc.png" width="36" height="36" title="Sass" />
+<img src="https://github.com/user-attachments/assets/a3e40bf1-82d5-4907-b3bd-10d2eb4b00f5.png" width="36" height="36" title="React Query" />
+<img src="https://user-images.githubusercontent.com/25181517/189716630-fe6c084c-6c66-43af-aa49-64c8aea4a5c2.png" width="36" height="36" title="Material UI" />
 <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/62091613/261395532-b40892ef-efb8-4b0e-a6b5-d1cfc2f3fc35.png" width="36" height="36" title="Vite" />
 <img src="https://user-images.githubusercontent.com/25181517/121401671-49102800-c959-11eb-9f6f-74d49a5e1774.png" width="36" height="36" title="npm" />
 </p>
