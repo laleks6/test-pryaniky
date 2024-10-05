@@ -7,6 +7,7 @@ Task:
 - Make a login modal
 - Interact with the API to get an authentication token and to interact with data
 - Use CRUD for a table with data
+- Use of MUI
 
 ## Link project 
 
